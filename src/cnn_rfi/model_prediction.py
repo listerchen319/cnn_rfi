@@ -4,21 +4,22 @@
 # # Model_prediction is the grand function that predicts the waterfall
 
 # In[1]:
-
-from Utilities.py import *
-#get_ipython().run_line_magic('run', 'Utilities.ipynb')
-
-
-# In[2]:
-
-
 import numpy as np
 import os
 from pyuvdata import UVData
 import tensorflow as tf
-#tf.config.list_physical_devices("GPU")
 import matplotlib.pyplot as plt
 import scipy
+
+
+import .utilities 
+#get_ipython().run_line_magic('run', 'Utilities.ipynb')
+
+#modul imort should come before file import
+#rename module to lower case
+#only import thing you use
+#put all the functions in the cnn_rfi
+# In[2]:
 
 
 # # The model_prediction function
@@ -40,9 +41,9 @@ def model_prediction(batch_num, batch_size, file_path, model_path):
     Output:
     predicted data indicating sky data and signal data
     '''
-    wf = get_directorydata(batch_num, batch_size, file_path)
-    wf_renorm  = grand_data_renorm(wf)
-    wf_reshape = wf_renorm.reshape(1, nextmultiple_time(wf), nextmultiple_freq(wf), 1)
+    wf = utilities.get_directorydata(batch_num, batch_size, file_path)
+    wf_renorm  = utilities.grand_data_renorm(wf)
+    wf_reshape = wf_renorm.reshape(1, utilities.nextmultiple_time(wf), utilities.nextmultiple_freq(wf), 1)
 
     output_model = tf.keras.models.load_model(model_path)
     decoded_data = output_model.predict(wf_reshape)
@@ -71,8 +72,8 @@ def model_prediction_pre(data, file_path, model_path):
     predicted data indicating sky data and signal data
     '''
     wf = data
-    wf_renorm  = grand_data_renorm(wf)
-    wf_reshape = wf_renorm.reshape(1, nextmultiple_time(wf), nextmultiple_freq(wf), 1)
+    wf_renorm  = utilities.grand_data_renorm(wf)
+    wf_reshape = wf_renorm.reshape(1, utilities.nextmultiple_time(wf), utilities.nextmultiple_freq(wf), 1)
 
     output_model = tf.keras.models.load_model(model_path)
     decoded_data = output_model.predict(wf_reshape)

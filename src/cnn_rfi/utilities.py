@@ -16,7 +16,6 @@ import numpy as np
 import os
 from pyuvdata import UVData
 import tensorflow as tf
-tf.config.list_physical_devices("GPU")
 
 
 # In[2]:
